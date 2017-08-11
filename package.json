@@ -1,6 +1,6 @@
 {
-  "name": "tarotcongolais",
-  "version": "1.0.0",
+  "name": "frigomanager",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/scripts/server/app.js",
   "dependencies": {

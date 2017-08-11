@@ -1,0 +1,32 @@
+-------------------------------
+Application de gestion de frigo
+-------------------------------
+
+* But/missions
+
+- Permettre à tout moment, d'accéder à l'ensemble des produits présents à la maison
+- Recherche d'un produit pour connaitre sa disponibilité et/ou la quantité disponible
+- Différentes catégories de produits : alimentaire, entretient, hygiène, etc...
+- Liste de course : Ajout de produit ou suppression
+
+* Bonus
+
+- Agenda de peremption
+
+* Model
+
+- Categories
+	- id
+	- name
+
+- Products
+	- id
+	- name
+	- barcode
+	- id_category
+
+- Stock
+	- id_product
+	- number
+	- add_date
+	

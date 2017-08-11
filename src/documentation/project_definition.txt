@@ -1,0 +1,12 @@
+projectDefinition
+
+- serveur qui possède une api + bdd.
+
+- bdd :
+    mongodb : https://frenchcoding.com/2014/09/17/comment-installer-mongodb-sur-son-poste-de-developpement/
+    - product : code_barre, nom, marque, contenance
+    - ajout : product_id, date, 
+    - retrait : product_id, date
+
+- appli raspberry: appli web avec la possibilité d'ajouter les produits avec un bar code scanner
+

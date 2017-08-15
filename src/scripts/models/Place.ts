@@ -1,11 +1,11 @@
 import { DbSchema } from '../modules/database'
 
-export interface CategorySchema  {
-    fields: {
+export interface PlaceSchema {
+    fields : {
         name: string
     }
 }
 
-export const CategoryDbSchema :DbSchema = {
+export const PlaceDbSchema :DbSchema = {
     indexes : ['name']
 }

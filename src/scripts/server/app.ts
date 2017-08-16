@@ -31,6 +31,7 @@ router.use(function(req, res, next) {
 });
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
+// Categories
 router.route('/categories')
     .post( (request, response) => {
         console.log('req data', request.body)
@@ -57,9 +58,53 @@ router.route('/categories/:category_id')
             console.log('err on remove category', err)
         })
     })
+    .get( (request, response) => {
+        db.categories.find({ _id : request.params.category_id }).then( (categories) => {
+            console.log('all categories', categories)
+            response.json({ categories: categories });    
+        }).catch(err => {
+            console.log('err on add category', err)
+        });
+    })
+    
+// Product
+router.route('/products')
+    .post( (request, response) => {
+        console.log('req data', request.body)
+        db.products.insert({ name : request.body.name + Date.now() }).then( (res) => {
+            console.log('product added')
+            response.json({ products: res });
+        }).catch(err => {
+            console.log('err on add product', err)
+        })
+    })
+    .get( (req, res) => {
+        db.products.find({}).then( (products) => {
+            console.log('all products', products)
+            res.json({ products: products });    
+        }).catch(err => {
+            console.log('err on add product', err)
+        });
+    })
+router.route('/products/:product_id')
+    .delete( (request, response) => {
+        db.products.remove(request.params.product_id).then( (res) => {
+            console.log('remove product', res)
+        }).catch(err => {
+            console.log('err on remove product', err)
+        })
+    })
+    .get( (request, response) => {
+        db.products.find({ _id : request.params.product_id }).then( (products) => {
+            console.log('all products', products)
+            response.json({ products: products });    
+        }).catch(err => {
+            console.log('err on add product', err)
+        });
+    })
 
 router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome our api!' });   
+    // res.json({ message: 'hooray! welcome our api!' });   
 });
 
 // REGISTER OUR ROUTES -------------------------------

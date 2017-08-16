@@ -1,5 +1,5 @@
 {
-  "name": "frigomanager",
+  "name": "foodmanager",
   "version": "0.0.1",
   "description": "",
   "main": "dist/scripts/server/app.js",
@@ -10,6 +10,7 @@
     "colors": "^1.1.2",
     "cors": "^2.8.4",
     "express": "^4.12.1",
+    "express-nedb-rest": "^1.2.4",
     "lodash": "^4.15.0",
     "nedb": "^1.8.0",
     "socket.io": "^1.7.2",

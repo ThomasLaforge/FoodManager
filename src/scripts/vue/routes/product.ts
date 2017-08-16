@@ -1,10 +1,19 @@
-import { apiPath } from '../../FoodManager'
+import { apiPath, openFoodApiPath } from '../../FoodManager'
 
 let template = `
     <div class="product">
         <div class="bar-code">
             <div class="bar-code-title">Bar Code</div>
             <div class="bar-code-value">{{ barCode }}</div>
+        </div>
+
+        <div class="product-description" v-if="openDataDescription && openDataDescription.status === 1">
+            <div class="product-description-name">Name: {{ openDataDescription.product.product_name }}</div>
+            <div class="product-description-brands">Brands: {{ openDataDescription.product.brands }}</div>
+            <div class="product-description-image">
+                <img :src="openDataDescription.product.selected_images.front.small.fr" />
+                <img :src="openDataDescription.product.selected_images.front.display.fr" />
+            </div>
         </div>
 
         <div class="product-list" v-if="productList.length > 0">
@@ -32,6 +41,7 @@ export const product = {
         return {
             productList : [],
             lineList: [],
+            openDataDescription: null,
             addable: false,
             removable: false
         }
@@ -47,14 +57,16 @@ export const product = {
     methods: {
         refresh: function(){
             Promise.all([
-                this.$http.get(apiPath + '/products?$filter=barcode $eq ' + this.barCode ),
-                this.$http.get(apiPath + '/lines?$filter=barcode $eq ' + this.barCode ),
+                this.$http.get(apiPath + '/products?$filter=barcode $eq "' + this.barCode + '"'),
+                this.$http.get(apiPath + '/lines?$filter=barcode $eq "' + this.barCode + '"'),
+                this.$http.get(openFoodApiPath + '/produit/' + this.barCode + '.json')
             ])
             .then(res => {
                 let datas = res.map(r => r.body)
                 console.log('product: get initial data', res.map(r => r.body), res)
                 this.productList = datas[0]
                 this.lineList = datas[1]
+                this.openDataDescription = datas[2]
             })
             .catch( err => {
                 console.log('product: get initial data err', err)
@@ -70,12 +82,12 @@ export const product = {
             console.log('create');
             this.$http.post(apiPath + '/products', { barcode : this.barCode, name : 'newProduct'})
             .then( (data) => {
-                console.log('product added', data)
-                this.refresh()
+                console.log('product added', data.body)
+                this.productList.push(data.body)
             })
         },
         deleteProduct: function(){
-            this.$http.delete(apiPath + '/products?$filter=barcode $eq ' + this.barCode)
+            this.$http.delete(apiPath + '/products?$filter=barcode $eq "' + this.barCode + '"')
             .then( res => {
                 if(res.ok){
                     console.log('product deleted', res)

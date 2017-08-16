@@ -1,7 +1,8 @@
-import { stock } from '../vue/stock'
-import { product } from '../vue/product'
+import { stock } from '../vue/routes/stock'
+import { product } from '../vue/routes/product'
 
 Vue.use(require('vue-resource'));
+Vue.use(require('vuetify'));
 
 const routes = [
   { path: '/', component: stock },
@@ -15,13 +16,21 @@ const router = new VueRouter({
 
 let app = new Vue({
     el: '#app',
-		router,
-		sockets:{
-      isLoggedIn(isLoggedIn: boolean){
-        console.log('is Logged in', isLoggedIn)
-        if(!isLoggedIn){
-            this.$router.push({path: '/login'});  
-        }
+    data : function(){
+      return {
+        drawer: null,
+        mini: false,
+        right: null,
+        items: [
+            { title: 'Home', icon: 'home', route: '/home' },
+            { title: 'Stock', icon: 'business', route: '/stock' }
+        ]
       }
-		}
+    },
+    router,
+    methods: {
+        moveTo(route: string){
+            this.$router.push(route)
+        }
+    }
 });

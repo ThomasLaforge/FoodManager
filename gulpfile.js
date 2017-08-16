@@ -75,6 +75,13 @@ gulp.task('js-libs', () => {
         .pipe(gulp.dest('dist/libs/js'));
 });
 
+gulp.task('css-libs', () => {
+    return gulp.src([
+            'node_modules/vuetify/dist/vuetify.min.css'
+        ])
+        .pipe(gulp.dest('dist/libs/css'));
+});
+
 gulp.task('browserSync', function() {
     browserSync({
         port: 3000,
@@ -91,7 +98,7 @@ gulp.task('browserSync', function() {
     });
 })
 
-gulp.task('build', ['scripts-client', 'compass', 'img', 'html', 'js-libs']);
+gulp.task('build', ['scripts-client', 'compass', 'img', 'html', 'js-libs', 'css-libs']);
 
 gulp.task('serve', function() {
     runSequence('build', 'browserSync', 'watch');

@@ -3,12 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>Food Manager - Thomas Laforge Dev</title>
-    <link rel="stylesheet" type="text/css" href="css/app.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href='libs/css/vuetify.min.css' type="text/css"rel="stylesheet">
+    <link  href="css/app.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
     <div id="app">
+            <v-app toolbar>
+                 <v-navigation-drawer
+      temporary
+      v-model="drawer" 
+      :mini-variant.sync="mini" 
+      light 
+      overflow
+      absolute
+    >
+      <v-list class="pa-1">
+        <v-list-tile avatar tag="div">
+          <v-list-tile-content>
+            <v-list-tile-title>Food Manager</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+      <v-list class="pt-0" dense>
+        <v-divider></v-divider>
+        <v-list-tile v-for="item in items" :key="item.title" @click="moveTo(item.route)">
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+    <v-toolbar fixed class="blue" dark>
+      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-title>Food Manager</v-toolbar-title>
+    </v-toolbar>
+    <main>
+      <v-container fluid>
         <router-view></router-view>
+      </v-container>
+    </main>
+            </v-app>
     </div>
 
     <!-- Scripts -->

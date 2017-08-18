@@ -53,7 +53,7 @@ gulp.task('watch', function() {
     gulp.watch('src/index.html', ['html']);
     gulp.watch(['src/scripts/modules/**/*.ts', 'src/scripts/client/**/*.ts', 'src/scripts/vue/**/*.ts'], ['scripts-client']);
     // gulp.watch(['src/scripts/modules/**/*.ts', 'src/scripts/server/**/*.ts'], ['scripts-server']);
-    gulp.watch('index.html', browserSync.reload);
+    gulp.watch('dist/index.html', browserSync.reload);
     gulp.watch('dist/scripts/client/app.js', browserSync.reload);
 });
 
@@ -85,7 +85,6 @@ gulp.task('css-libs', () => {
 gulp.task('browserSync', function() {
     browserSync({
         port: 3000,
-        files: ['**/*.html', '**/*.js', '**/*.css'],
         injectChanges: true,
         notify: true,
         reloadDelay: 0,

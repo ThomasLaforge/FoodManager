@@ -21,6 +21,5 @@ export function isValidBarCode(barCode: string){
         isValidBarCode = checkDigit === calculatedCheckDigit
     }
 
-
     return isValidBarCode;
 }

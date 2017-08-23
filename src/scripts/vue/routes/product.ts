@@ -29,7 +29,27 @@ let template = `
                 <v-btn class="actions-delete" @click="deleteProduct">Delete</v-btn>
             </div>
             <div class="actions-product-not-exists" v-if="productList.length === 0">
-                <v-btn class="actions-create" @click="create">Create</v-btn>
+                <v-text-field 
+                    id="create-product-name" 
+                    v-model="createProductName"
+                    label="Name"
+                />
+                <v-select
+                    :items="categoryNames"
+                    v-model="categoryToAdd"
+                    label="Add some categories"
+                    autocomplete
+                />
+                <v-select
+                    :items="placesList"
+                    v-model="categoryToAdd"
+                    label="Add some categories"
+                    autocomplete
+                />
+                <div class="create-product-categories-chips">
+                    
+                </div>
+                <v-btn class="actions-create-product" @click="create">Create</v-btn>
             </div>
         </div>
     </div>
@@ -43,7 +63,10 @@ export const product = {
             lineList: [],
             openDataDescription: null,
             addable: false,
-            removable: false
+            removable: false,
+            createProductName: '',
+            categoryNames: [],
+            categoryToAdd: ''
         }
     },
     mounted: function(){
@@ -53,20 +76,23 @@ export const product = {
     },
     computed : {
         barCode : function(){ return this.$route.params.barCode },
+        createFormOk: function(){ return this.createProductName.length > 0 }
     },
     methods: {
         refresh: function(){
             Promise.all([
                 this.$http.get(apiPath + '/products?$filter=barcode $eq "' + this.barCode + '"'),
                 this.$http.get(apiPath + '/lines?$filter=barcode $eq "' + this.barCode + '"'),
-                this.$http.get(openFoodApiPath + '/produit/' + this.barCode + '.json')
+                // this.$http.get(openFoodApiPath + '/produit/' + this.barCode + '.json'),
+                this.$http.get(apiPath + '/categories'),                
             ])
             .then(res => {
                 let datas = res.map(r => r.body)
                 console.log('product: get initial data', res.map(r => r.body), res)
                 this.productList = datas[0]
                 this.lineList = datas[1]
-                this.openDataDescription = datas[2]
+                // this.openDataDescription = datas[2]
+                this.categoryNames = datas[2].map(c => c.name)
             })
             .catch( err => {
                 console.log('product: get initial data err', err)

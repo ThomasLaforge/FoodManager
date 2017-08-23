@@ -3,11 +3,11 @@ import { apiPath } from '../../FoodManager'
 
 let template = `
     <div class="home">
-        <scanner />      
+        <scanner />
     </div>
 `
 
-export const stock = {
+export const home = {
     template: template,
     data: function() {
         return {
@@ -18,7 +18,5 @@ export const stock = {
     },
     methods: {
 
-    },
-    mounted: function(){
     }
 }

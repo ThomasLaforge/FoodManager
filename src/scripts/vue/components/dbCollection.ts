@@ -1,11 +1,16 @@
 import { apiPath } from '../../FoodManager'
 
 let template = `
-    <div class="collection" :class=" 'collection-' + singularCollection">
-        <div :class="singularCollection + '-manager'">
-            <h2>{{ collectionTitle }}</h2>
-
+    <v-layout column fluid 
+        class="collection" :class=" 'collection-' + singularCollection"
+    >
+        <v-flex :class="singularCollection + '-manager'">
+            <h2 xs12>{{ collectionTitle }}</h2>
+        </v-flex>
+        <v-flex xs12 sm10 offset-sm1 sm10 offset-sm1 md8 offset-md2>
             <v-data-table
+                xs8
+                offset-xs2
                 v-model="selected"
                 :headers="headers"
                 :items="collectionData"
@@ -20,11 +25,22 @@ let template = `
                 </template>
             </v-data-table>
 
-            <v-text-field :id=" 'input-' + singularCollection + '-name' " v-model="newEltName" />
-            <v-btn @click="addCollectionData">Add new {{ collection }}</v-btn>
-            <v-btn @click="logSelected">Log selected</v-btn>
-        </div>
-    </div>
+            <v-text-field
+                :id=" 'input-' + singularCollection + '-name' " 
+                v-model="newEltName" 
+            />
+            <v-btn xs6
+                @click="addCollectionData"
+            >
+                Add new {{ collection }}
+            </v-btn>
+            <v-btn xs6 
+                @click="logSelected"
+            >
+                Log selected
+            </v-btn>
+        </v-flex> 
+    </v-layout>
 `
 
 export const dbCollection = {

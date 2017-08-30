@@ -6,4 +6,4 @@ dist
 .sass-cache
 npm-debug.log
 typings
-databases/**
+databases/*.db

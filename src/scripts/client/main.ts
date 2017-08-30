@@ -1,4 +1,6 @@
 import { stock } from '../vue/routes/stock'
+import { categories } from '../vue/routes/categories'
+import { places } from '../vue/routes/places'
 import { home } from '../vue/routes/home'
 import { product } from '../vue/routes/product'
 
@@ -8,8 +10,8 @@ Vue.use(require('vuetify'));
 const routes = [
 	{ path: '/', component: home },
 	{ path: '/home', component: home },
-	{ path: '/categories', component: stock },
-	{ path: '/places', component: stock },
+	{ path: '/categories', component: categories },
+	{ path: '/places', component: places },
 	{ path: '/product/:barCode', component: product }
 ]
 
@@ -20,7 +22,7 @@ const router = new VueRouter({
 let app = new Vue({
 	el: '#app',
 	data : function(){
-		return {
+		return { 
 			drawer: null,
 			mini: false,
 			right: null,

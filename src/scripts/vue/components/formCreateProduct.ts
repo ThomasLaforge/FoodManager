@@ -1,7 +1,7 @@
 import { apiPath } from '../../FoodManager'
 
 let template = `
-<div class="form-create-product">
+<vCard class="form-create-product">
     <v-text-field 
         id="create-product-name" 
         v-model="createProductName"
@@ -20,10 +20,11 @@ let template = `
         autocomplete
     />
     <div class="create-product-categories-chips">
-
+        <vChip v-for="(c, k) in categories" :key="k">{{ c }}</vChip>
     </div>
+    <vBtn @click="addCategoryChip">Add category to product</vBtn>
     <v-btn class="actions-create-product" @click="create">Create</v-btn>
-</div>
+</vCard>
 `
 
 export const formCreateProduct = {
@@ -78,5 +79,9 @@ export const formCreateProduct = {
                 console.log('error on adding product', err)
             })
         },
+        addCategoryChip: function(){
+            this.categories.push(this.category);
+            this.category = ''
+        }
     }
 }

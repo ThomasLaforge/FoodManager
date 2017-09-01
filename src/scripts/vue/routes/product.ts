@@ -17,13 +17,18 @@ let template = `
             </div>
         </div>
 
+        <formCreateProduct v-if="productList.length === 0" 
+            @addProduct="addProduct" 
+            :barCode="barCode" 
+        />
 
-        <div v-if="productList.length === 0">
-            <formCreateProduct @addProduct="addProduct" :barCode="barCode" />
-        </div>
         <div class="product-list" v-if="productList.length > 0">
             <div class="product-list-elt" v-for="(product, i) in productList">
-                {{ product }}
+                Name : {{ product.name }} ,
+                Categories : <span v-for="(c, k) in product.categories">
+                    {{ c + (k > 0 ? ', ' : '') }}
+                </span> ,
+                Place : {{ product.place }}
             </div>
         </div>
 
@@ -31,7 +36,7 @@ let template = `
             <div class="action-product-exists" v-if="productList.length > 0">
                 <v-btn class="actions-add" @click="addLine">Add</v-btn>
                 <v-btn class="actions-remove" @click="removeLine">Remove</v-btn>
-                <v-btn class="actions-delete" @click="deleteProduct">Delete</v-btn>
+                <!-- <v-btn class="actions-delete" @click="deleteProduct">Delete</v-btn> -->
             </div>
             <div class="actions-product-not-exists" v-if="productList.length === 0">
             </div>

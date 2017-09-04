@@ -29,7 +29,7 @@ let template = `
 
 export const formCreateProduct = {
     template: template,
-    props: ['barCode'],
+    props: ['barCode', 'openDataProductName'],
     data: function() {
         return {
             createProductName: '',
@@ -53,6 +53,11 @@ export const formCreateProduct = {
         .catch( err => {
             console.log('product form: get initial data err', err)
         })
+    },
+    watch: {
+        openDataProductName: function(val, oldVal){
+            this.createProductName = val
+        }
     },
     computed: {
 

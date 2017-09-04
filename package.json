@@ -12,6 +12,7 @@
     "express": "^4.12.1",
     "express-nedb-rest": "^1.2.4",
     "lodash": "^4.15.0",
+    "moment": "^2.18.1",
     "nedb": "^1.8.0",
     "socket.io": "^1.7.2",
     "utf-8-validate": "^2.0.0",

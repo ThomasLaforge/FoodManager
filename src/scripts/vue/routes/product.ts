@@ -1,5 +1,6 @@
 import { apiPath, openFoodApiPath } from '../../FoodManager'
 import { formCreateProduct } from '../components/formCreateProduct'
+import * as moment from 'moment'
 
 let template = `
     <div class="product">
@@ -18,7 +19,8 @@ let template = `
         </div>
 
         <formCreateProduct v-if="productList.length === 0" 
-            @addProduct="addProduct" 
+            @addProduct="addProduct"
+            :openDataProductName="productName"
             :barCode="barCode" 
         />
 
@@ -29,6 +31,29 @@ let template = `
                     {{ c + (k > 0 ? ', ' : '') }}
                 </span> ,
                 Place : {{ product.place }}
+            </div>
+            <div>
+                AddLine <br />
+                <vDatePicker
+                    :first-day-of-week="1"
+                    locale="fr"
+                    v-model="datepicker"
+                />
+                <vTextField 
+                    v-model="daysBeforePerumption"
+                    label="daysBeforePerumption"
+                    type="number" 
+                />
+                <vBtn @click="showDate">Show date</vBtn>
+                <div class="line-amount">
+                    <vBtn @click="amountDown"><vIcon>keyboard_arrow_left</vIcon></vBtn>
+                    <vTextField 
+                        id="line-amount" 
+                        v-model="lineAmount"
+                        type="number" 
+                    />
+                    <vBtn @click="amountUp"><vIcon>keyboard_arrow_right</vIcon></vBtn>                    
+                </div>
             </div>
         </div>
 
@@ -52,7 +77,10 @@ export const product = {
             lineList: [],
             openDataDescription: null,
             addable: false,
-            removable: false
+            removable: false,
+            productName: null,
+            datepicker: moment().format('YYYY-MM-DD'),
+            lineAmount: 1
         }
     },
     components: {
@@ -68,10 +96,12 @@ export const product = {
         ])
         .then(res => {
             let datas = res.map(r => { return r.body || r })
-            // console.log('product: get initial data', datas)
+            console.log('product: get initial data', datas)
             this.productList = datas[0]
             this.lineList = datas[1]
             this.openDataDescription = datas[2] || null
+            this.productName = this.openDataDescription && this.openDataDescription.product && this.openDataDescription.product.product_name
+            console.log('open read', this.productName, datas[2], datas[2] || null, this.openDataDescription && this.openDataDescription.product && this.openDataDescription.product.product_name)
         })
         .catch( err => {
             console.log('product: get initial data err', err)
@@ -80,6 +110,16 @@ export const product = {
     computed : {
         barCode : function(){ return this.$route.params.barCode },
         createFormOk: function(){ return this.createProductName.length > 0 },
+        daysBeforePerumption: {
+            get : function(){ 
+                return moment(this.datepicker).diff(moment().format('YYYY-MM-DD'), 'days') 
+            },
+            set : function(newVal){ 
+                if(!Number.isNaN(newVal) && newVal !== ''){
+                    this.datepicker = moment().add(newVal, 'days').format('YYYY-MM-DD')
+                }
+            }
+        }
     },
     methods: {
         addLine: function(){
@@ -99,6 +139,17 @@ export const product = {
         },
         addProduct: function(product){
             this.productList.push(product)            
+        },
+        showDate: function(){
+            console.log('actual date', this.datepicker)
+            console.log('moment now', moment().format('YYYY-MM-DD'))
+            console.log('diff date', moment(this.datepicker).diff(moment().format('YYYY-MM-DD'), 'days') )  
+        },
+        amountDown: function(){
+            this.lineAmount > 0 && this.lineAmount--
+        },
+        amountUp: function(){
+            this.lineAmount++
         }
     }
 }

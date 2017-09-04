@@ -46,7 +46,10 @@ let template = `
                 />
                 <vBtn @click="showDate">Show date</vBtn>
                 <div class="line-amount">
-                    <vBtn @click="amountDown"><vIcon>keyboard_arrow_left</vIcon></vBtn>
+                    <vBtn 
+                        @click="amountDown" 
+                        :disabled="lineAmount === 1"
+                    ><vIcon>keyboard_arrow_left</vIcon></vBtn>
                     <vTextField 
                         id="line-amount" 
                         v-model="lineAmount"
@@ -124,6 +127,8 @@ export const product = {
     methods: {
         addLine: function(){
             console.log('add product')
+            let datas = {};
+            // this.$http.post(apiPath + '/lines', datas)            
         },
         removeLine: function(){
             console.log('remove product')
@@ -146,7 +151,7 @@ export const product = {
             console.log('diff date', moment(this.datepicker).diff(moment().format('YYYY-MM-DD'), 'days') )  
         },
         amountDown: function(){
-            this.lineAmount > 0 && this.lineAmount--
+            this.lineAmount > 1 && this.lineAmount--
         },
         amountUp: function(){
             this.lineAmount++

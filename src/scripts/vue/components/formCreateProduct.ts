@@ -1,4 +1,5 @@
 import { apiPath } from '../../FoodManager'
+import * as _ from 'lodash'
 
 let template = `
 <vCard class="form-create-product">
@@ -8,36 +9,41 @@ let template = `
         label="Name"
     />
     <v-select
-        :items="placeCollection"
-        v-model="place"
-        label="Add a place"
-        autocomplete
-    />
-    <v-select
         :items="categoryCollection"
         v-model="category"
         label="Add some categories"
         autocomplete
     />
-    <div class="create-product-categories-chips">
-        <vChip v-for="(c, k) in categories" :key="k">{{ c }}</vChip>
-    </div>
     <vBtn @click="addCategoryChip">Add category to product</vBtn>
+    <div class="create-product-categories-chips">
+        <vChip v-for="(c, k) in categories" 
+            :key="k"
+            class="blue white--text"
+            close 
+            v-model="categories[k]"
+        >{{ k }}</vChip>
+    </div>
+    <v-select
+        :items="placeCollection"
+        v-model="place"
+        label="Add a place"
+        autocomplete
+    />
     <v-btn class="actions-create-product" @click="create">Create</v-btn>
 </vCard>
 `
 
 export const formCreateProduct = {
     template: template,
-    props: ['barCode', 'openDataProductName'],
+    props: ['barCode', 'openDataProductName', 'openDataCategories'],
     data: function() {
         return {
             createProductName: '',
-            categoryCollection: [],
             category: '',
-            categories: [],
+            place: '',
+            categoryCollection: [],
             placeCollection: [],            
-            place: ''
+            categories: {}
         }
     },
     mounted: function(){
@@ -57,10 +63,20 @@ export const formCreateProduct = {
     watch: {
         openDataProductName: function(val, oldVal){
             this.createProductName = val
+        },
+        openDataCategories: function(val){
+            console.log('update categories with open data', val)
+            let copy = _.cloneDeep(this.categories)
+            val.forEach( c => {
+               copy[c] = true 
+            });
+            this.categories = copy
         }
     },
     computed: {
-
+        openedCategories: function(){
+            return Object.keys(this.categories).filter( key => this.categories[key] );
+        }
     },
     methods: {
         create: function(){
@@ -68,7 +84,7 @@ export const formCreateProduct = {
             let newProduct = {
                 barcode : this.barCode, 
                 name : this.createProductName, 
-                categories: this.categories,
+                categories: this.openedCategories,
                 place: this.place
             }
             this.$http.post(apiPath + '/products', newProduct)
@@ -85,7 +101,9 @@ export const formCreateProduct = {
             })
         },
         addCategoryChip: function(){
-            this.categories.push(this.category);
+            let copy = _.cloneDeep(this.categories)
+            copy[this.category] = true;
+            this.categories = copy
             this.category = ''
         }
     }

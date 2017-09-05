@@ -1,5 +1,6 @@
 import { apiPath, openFoodApiPath } from '../../FoodManager'
 import { formCreateProduct } from '../components/formCreateProduct'
+import { customInputNumber } from '../components/customInputNumber'
 import * as moment from 'moment'
 
 let template = `
@@ -13,14 +14,16 @@ let template = `
             <div class="product-description-name">Name: {{ openDataDescription.product.product_name }}</div>
             <div class="product-description-brands">Brands: {{ openDataDescription.product.brands }}</div>
             <div class="product-description-image">
+                {{ openDataDescription.product.categories }}
                 <img :src="openDataDescription.product.selected_images.front.small.fr" />
-                <img :src="openDataDescription.product.selected_images.front.display.fr" />
+                <!-- <img :src="openDataDescription.product.selected_images.front.display.fr" /> -->
             </div>
         </div>
 
         <formCreateProduct v-if="productList.length === 0" 
             @addProduct="addProduct"
             :openDataProductName="productName"
+            :openDataCategories="openDataCategories"
             :barCode="barCode" 
         />
 
@@ -34,28 +37,23 @@ let template = `
             </div>
             <div>
                 AddLine <br />
-                <vDatePicker
-                    :first-day-of-week="1"
-                    locale="fr"
-                    v-model="datepicker"
-                />
-                <vTextField 
-                    v-model="daysBeforePerumption"
-                    label="daysBeforePerumption"
-                    type="number" 
-                />
-                <vBtn @click="showDate">Show date</vBtn>
-                <div class="line-amount">
-                    <vBtn 
-                        @click="amountDown" 
-                        :disabled="lineAmount === 1"
-                    ><vIcon>keyboard_arrow_left</vIcon></vBtn>
+                <v-checkbox :label="'With peremption date'" v-model="withPeremptionDate"></v-checkbox>           
+                <div class="peremption-selection" v-if="withPeremptionDate">
+                    <vDatePicker
+                        :first-day-of-week="1"
+                        locale="fr"
+                        v-model="datepicker"
+                    />
                     <vTextField 
-                        id="line-amount" 
-                        v-model="lineAmount"
+                        v-model="daysBeforePerumption"
+                        label="daysBeforePerumption"
                         type="number" 
                     />
-                    <vBtn @click="amountUp"><vIcon>keyboard_arrow_right</vIcon></vBtn>                    
+                </div>
+                <div class="line-amount">
+                    <customInputNumber 
+                        v-model="lineAmount"
+                    />
                 </div>
             </div>
         </div>
@@ -64,6 +62,7 @@ let template = `
             <div class="action-product-exists" v-if="productList.length > 0">
                 <v-btn class="actions-add" @click="addLine">Add</v-btn>
                 <v-btn class="actions-remove" @click="removeLine">Remove</v-btn>
+                <v-btn class="actions-delete" @click="deleteProduct">Delete</v-btn>
                 <!-- <v-btn class="actions-delete" @click="deleteProduct">Delete</v-btn> -->
             </div>
             <div class="actions-product-not-exists" v-if="productList.length === 0">
@@ -82,12 +81,15 @@ export const product = {
             addable: false,
             removable: false,
             productName: null,
+            openDataCategories: [],
             datepicker: moment().format('YYYY-MM-DD'),
-            lineAmount: 1
+            lineAmount: 1,
+            withPeremptionDate: true
         }
     },
     components: {
-        formCreateProduct
+        formCreateProduct,
+        customInputNumber
     },
     mounted: function(){
         // console.log('routing:product', this.$route.params, this.$route.params.barCode)
@@ -104,6 +106,8 @@ export const product = {
             this.lineList = datas[1]
             this.openDataDescription = datas[2] || null
             this.productName = this.openDataDescription && this.openDataDescription.product && this.openDataDescription.product.product_name
+            this.openDataCategories = this.openDataDescription && this.openDataDescription.product.categories && this.openDataDescription.product.categories.split(',')
+            
             console.log('open read', this.productName, datas[2], datas[2] || null, this.openDataDescription && this.openDataDescription.product && this.openDataDescription.product.product_name)
         })
         .catch( err => {
@@ -127,8 +131,14 @@ export const product = {
     methods: {
         addLine: function(){
             console.log('add product')
-            let datas = {};
-            // this.$http.post(apiPath + '/lines', datas)            
+            let datas = {
+                product_id: this.productList[0]._id,
+                amount: this.lineAmount,
+                peremption_date: this.withPeremptionDate ? this.datepicker : null
+            };
+            this.$http.post(apiPath + '/lines', datas).then( newLine => {
+                console.log('new Line', newLine.body)
+            })            
         },
         removeLine: function(){
             console.log('remove product')
@@ -149,12 +159,6 @@ export const product = {
             console.log('actual date', this.datepicker)
             console.log('moment now', moment().format('YYYY-MM-DD'))
             console.log('diff date', moment(this.datepicker).diff(moment().format('YYYY-MM-DD'), 'days') )  
-        },
-        amountDown: function(){
-            this.lineAmount > 1 && this.lineAmount--
-        },
-        amountUp: function(){
-            this.lineAmount++
         }
     }
 }

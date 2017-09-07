@@ -4,71 +4,66 @@ import { customInputNumber } from '../components/customInputNumber'
 import * as moment from 'moment'
 
 let template = `
-    <div class="product">
-        <div class="bar-code">
-            <div class="bar-code-title">Bar Code</div>
-            <div class="bar-code-value">{{ barCode }}</div>
-        </div>
+<vLayout row wrap class="product">
+    <vFlex xs12 v-if="productList.length > 0 || openDataDescription && openDataDescription.status === 1">
+        <v-card>
+            <v-card-media v-if="openDataDescription" :src="openDataDescription.product.selected_images.front.display.fr" height="300px" />
+            <v-card-title primary-title>
+                <h2 class="headline mb-0">{{ openDataDescription.product.product_name }}</h2>
+            </v-card-title>
+            <vCardText>
+                <div class="bar-code-title">Bar Code : {{ barCode }}</div>
+                <div class="product-description-brands">Brands: {{ openDataDescription.product.brands }}</div>
+            </vCardText>
+        </v-card>
+    </vFlex>
 
-        <div class="product-description" v-if="openDataDescription && openDataDescription.status === 1">
-            <div class="product-description-name">Name: {{ openDataDescription.product.product_name }}</div>
-            <div class="product-description-brands">Brands: {{ openDataDescription.product.brands }}</div>
-            <div class="product-description-image">
-                {{ openDataDescription.product.categories }}
-                <img :src="openDataDescription.product.selected_images.front.small.fr" />
-                <!-- <img :src="openDataDescription.product.selected_images.front.display.fr" /> -->
+    <formCreateProduct v-if="productList.length === 0" 
+        @addProduct="addProduct"
+        :openDataProductName="productName"
+        :openDataCategories="openDataCategories"
+        :barCode="barCode" 
+    />
+
+    <vFlex xs12 class="product-list" v-if="productList.length > 0">
+        <div class="product-list-elt" v-for="(product, i) in productList">
+            Categories : <span v-for="(c, k) in product.categories">
+                {{ c + (k > 0 ? ', ' : '') }}
+            </span>
+        <div>
+            AddLine <br />
+            <v-checkbox :label="'With peremption date'" v-model="withPeremptionDate"></v-checkbox>           
+            <div class="peremption-selection" v-if="withPeremptionDate">
+                <vDatePicker
+                    :first-day-of-week="1"
+                    locale="fr"
+                    v-model="datepicker"
+                />
+                <vTextField 
+                    v-model="daysBeforePerumption"
+                    label="daysBeforePerumption"
+                    type="number" 
+                />
             </div>
-        </div>
-
-        <formCreateProduct v-if="productList.length === 0" 
-            @addProduct="addProduct"
-            :openDataProductName="productName"
-            :openDataCategories="openDataCategories"
-            :barCode="barCode" 
-        />
-
-        <div class="product-list" v-if="productList.length > 0">
-            <div class="product-list-elt" v-for="(product, i) in productList">
-                Name : {{ product.name }} ,
-                Categories : <span v-for="(c, k) in product.categories">
-                    {{ c + (k > 0 ? ', ' : '') }}
-                </span> ,
-                Place : {{ product.place }}
-            </div>
-            <div>
-                AddLine <br />
-                <v-checkbox :label="'With peremption date'" v-model="withPeremptionDate"></v-checkbox>           
-                <div class="peremption-selection" v-if="withPeremptionDate">
-                    <vDatePicker
-                        :first-day-of-week="1"
-                        locale="fr"
-                        v-model="datepicker"
-                    />
-                    <vTextField 
-                        v-model="daysBeforePerumption"
-                        label="daysBeforePerumption"
-                        type="number" 
-                    />
-                </div>
-                <div class="line-amount">
-                    <customInputNumber 
-                        v-model="lineAmount"
-                    />
-                </div>
+            <div class="line-amount">
+                <customInputNumber 
+                    v-model="lineAmount"
+                />
             </div>
         </div>
+    </vFlex>
 
-        <div class="actions">
-            <div class="action-product-exists" v-if="productList.length > 0">
-                <v-btn class="actions-add" @click="addLine">Add</v-btn>
-                <v-btn class="actions-remove" @click="removeLine">Remove</v-btn>
-                <v-btn class="actions-delete" @click="deleteProduct">Delete</v-btn>
-                <!-- <v-btn class="actions-delete" @click="deleteProduct">Delete</v-btn> -->
-            </div>
-            <div class="actions-product-not-exists" v-if="productList.length === 0">
-            </div>
+    <vFlex xs12 class="actions">
+        <div class="action-product-exists" v-if="productList.length > 0">
+            <v-btn class="actions-add" @click="addLine">Add</v-btn>
+            <v-btn class="actions-remove" @click="removeLine">Remove</v-btn>
+            <v-btn class="actions-delete" @click="deleteProduct">Delete</v-btn>
+            <!-- <v-btn class="actions-delete" @click="deleteProduct">Delete</v-btn> -->
         </div>
-    </div>
+        <div class="actions-product-not-exists" v-if="productList.length === 0">
+        </div>
+    </vFlex>
+</vLayout>
 `
 
 export const product = {

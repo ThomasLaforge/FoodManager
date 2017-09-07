@@ -1,21 +1,30 @@
 let template = `
-<div class="custom-number-input">
-    <vBtn 
-        @click="amountDown"
-        :disabled="value === 1"
-    >
-        <vIcon>keyboard_arrow_left</vIcon>
-    </vBtn>
-    <vTextField 
-        id="line-amount"
-        :value="customValue"
-        @input="updateValue"
-        type="number" 
-    />
-    <vBtn @click="amountUp">
-        <vIcon>keyboard_arrow_right</vIcon>
-    </vBtn>                    
-</div>
+<vLayout class="custom-number-input">
+    <vFlex x3 class="text-xs-center">
+        <vBtn
+            @click="amountDown"
+            :disabled="value === 1"
+        >
+            <vIcon>keyboard_arrow_left</vIcon>
+        </vBtn>
+    </vFlex>
+    <vFlex x6>
+        <vTextField 
+            label="Amount"
+            id="line-amount"
+            :value="customValue"
+            @input="updateValue"
+            type="number" 
+        />
+    </vFlex>
+    <vFlex x3 class="text-xs-center">    
+        <vBtn
+            @click="amountUp"
+        >
+            <vIcon>keyboard_arrow_right</vIcon>
+        </vBtn>
+    </vFlex>
+</vLayout>
 `
 
 export const customInputNumber = {

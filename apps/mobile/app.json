@@ -3,6 +3,7 @@
     "name": "bar-code-scanner",
     "slug": "bar-code-scanner",
     "version": "1.0.0",
+    "scheme": "bar-code-scanner",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -34,7 +35,8 @@
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
           "recordAudioAndroid": true
         }
-      ]
+      ],
+      "expo-router"
     ]
   }
 }

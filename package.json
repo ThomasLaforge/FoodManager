@@ -2,7 +2,7 @@
   "name": "frizzer",
   "version": "1.0.0",
   "description": "Frizzer is the future of fridge management, bettersourcing, top food tracking and improvement of stock management at home.",
-  "main": "index.js",
+  "main": "expo-router/entry",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

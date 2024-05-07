@@ -2,7 +2,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera/next';
 import { useEffect, useState } from 'react';
 import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function App() {
+export default function Page() {
   const [facing, setFacing] = useState<'front' | 'back'>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [scannedData, setScannedData] = useState<string | null>(null);

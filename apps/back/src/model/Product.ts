@@ -5,6 +5,9 @@ export const ProductModel = (sequelize: Sequelize) => {
         name: DataTypes.STRING,
         description: DataTypes.STRING,
         image: DataTypes.STRING,
-        bar_code: DataTypes.INTEGER
+        bar_code: {
+            type: DataTypes.INTEGER,
+            unique: true
+        }
     })
 }

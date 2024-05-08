@@ -1,5 +1,8 @@
+@server_url = https://subtle-definitely-kiwi.ngrok-free.app
+# @server_url = http://localhost:1337
+
 ###
-POST http://localhost:1337/api/auth/local/register
+POST {{server_url}}/api/auth/local/register
 Content-Type: application/json
 
 {
@@ -9,7 +12,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:1337/api/auth/change-password
+POST {{server_url}}/api/auth/change-password
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0b210b20iLCJlbWFpbCI6InRob21hc2xhZm9yZ2VAZ21haWwuY29tIiwiY3JlYXRlZEF0IjoiMjAyMy0xMi0wN1QwOTowODo1Mi43NzdaIiwidXBkYXRlZEF0IjoiMjAyMy0xMi0wN1QwOToxMToxNC42MDdaIiwiaWF0IjoxNzAxOTQwMzIxfQ.tuzC-PVTqhF4qFaYOhC4wPxvK48EvNqtV-dh0moZLvI
 
@@ -20,7 +23,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hb
 }
 
 ###
-POST http://localhost:1337/api/auth/local
+POST {{server_url}}/api/auth/local
 Content-Type: application/json
 
 {
@@ -29,82 +32,25 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:1337/api/auth/logout
+POST {{server_url}}/api/auth/logout
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0b210b20iLCJlbWFpbCI6InRob21hc2xhZm9yZ2VAZ21haWwuY29tIiwiY3JlYXRlZEF0IjoiMjAyMy0xMi0wN1QwOTowODo1Mi43NzdaIiwidXBkYXRlZEF0IjoiMjAyMy0xMi0wN1QwOToxMToxNC42MDdaIiwiaWF0IjoxNzAxOTQwMzIxfQ.tuzC-PVTqhF4qFaYOhC4wPxvK48EvNqtV-dh0moZLvI
 
 ###
-GET http://localhost:1337/api/users/me
+GET {{server_url}}/api/users/me
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0b210b20iLCJlbWFpbCI6InRob21hc2xhZm9yZ2VAZ21haWwuY29tIiwiY3JlYXRlZEF0IjoiMjAyMy0xMi0wN1QwOTowODo1Mi43NzdaIiwidXBkYXRlZEF0IjoiMjAyMy0xMi0wN1QwOToxMToxNC42MDdaIiwiaWF0IjoxNzAxOTQwMzIxfQ.tuzC-PVTqhF4qFaYOhC4wPxvK48EvNqtV-dh0moZLvI
 
 ###
-GET http://localhost:1337/api/free-games
+GET {{server_url}}/api/products
 
 ###
-POST http://localhost:1337/api/free-games
+POST {{server_url}}/api/products/check-exists
 Content-Type: application/json
 
 {
     "data": {
-        "name": "Sonic",
-        "description": "un hérisson bleu",
-        "image": "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch/70010000040331/desc/d13123553d5a05ebd2f3217db24b35c13131e1cdcf9c5aeb1552ba8e67efd4d9"
+        "name": "Pepito",
+        "description": "Des bons petits biscuits",
+        "image": "https://images.openfoodfacts.org/images/products/304/828/290/0646/front_fr.54.400.jpg",
+        "bar_code": "3048282900646"
     }
-}
-
-###
-GET http://localhost:1337/api/free-games/1
-
-###
-PUT http://localhost:1337/api/free-games/1
-Content-Type: application/json
-
-{
-    "data": {
-        "name": "Sonic",
-        "description": "un hérisson bleu et rapide",
-        "img": "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch/70010000040331/desc/d13123553d5a05ebd2f3217db24b35c13131e1cdcf9c5aeb1552ba8e67efd4d9"
-    }
-}
-
-###
-DELETE http://localhost:1337/api/free-games/1
-
-###
-GET http://localhost:1337/api/official-games
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0b210b20iLCJlbWFpbCI6InRob21hc2xhZm9yZ2VAZ21haWwuY29tIiwiY3JlYXRlZEF0IjoiMjAyMy0xMi0wN1QwOTowODo1Mi43NzdaIiwidXBkYXRlZEF0IjoiMjAyMy0xMi0wN1QwOToxMToxNC42MDdaIiwiaWF0IjoxNzAxOTQwMzIxfQ.tuzC-PVTqhF4qFaYOhC4wPxvK48EvNqtV-dh0moZLvI
-
-###
-POST http://localhost:1337/api/official-games
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0b210b20iLCJlbWFpbCI6InRob21hc2xhZm9yZ2VAZ21haWwuY29tIiwiY3JlYXRlZEF0IjoiMjAyMy0xMi0wN1QwOTowODo1Mi43NzdaIiwidXBkYXRlZEF0IjoiMjAyMy0xMi0wN1QwOToxMToxNC42MDdaIiwiaWF0IjoxNzAxOTQwMzIxfQ.tuzC-PVTqhF4qFaYOhC4wPxvK48EvNqtV-dh0moZLvI
-
-{
-    "data": {
-        "name": "Sonic Deluxe",
-        "description": "un hérisson bleu",
-        "price": 59,
-        "image": "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch/70010000040331/desc/d13123553d5a05ebd2f3217db24b35c13131e1cdcf9c5aeb1552ba8e67efd4d9"
-    }
-}
-
-###
-GET http://localhost:1337/api/official-games/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0b210b20iLCJlbWFpbCI6InRob21hc2xhZm9yZ2VAZ21haWwuY29tIiwiY3JlYXRlZEF0IjoiMjAyMy0xMi0wN1QwOTowODo1Mi43NzdaIiwidXBkYXRlZEF0IjoiMjAyMy0xMi0wN1QwOToxMToxNC42MDdaIiwiaWF0IjoxNzAxOTQwMzIxfQ.tuzC-PVTqhF4qFaYOhC4wPxvK48EvNqtV-dh0moZLvI
-
-###
-PUT http://localhost:1337/api/official-games/1
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0b210b20iLCJlbWFpbCI6InRob21hc2xhZm9yZ2VAZ21haWwuY29tIiwiY3JlYXRlZEF0IjoiMjAyMy0xMi0wN1QwOTowODo1Mi43NzdaIiwidXBkYXRlZEF0IjoiMjAyMy0xMi0wN1QwOToxMToxNC42MDdaIiwiaWF0IjoxNzAxOTQwMzIxfQ.tuzC-PVTqhF4qFaYOhC4wPxvK48EvNqtV-dh0moZLvI
-
-{
-    "data": {
-        "name": "Sonic Deluxe",
-        "description": "un hérisson bleu",
-        "image": "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch/70010000040331/desc/d13123553d5a05ebd2f3217db24b35c13131e1cdcf9c5aeb1552ba8e67efd4d9",
-        "price": 500
-    }
-}
-
-###
-DELETE http://localhost:1337/api/official-games/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0b210b20iLCJlbWFpbCI6InRob21hc2xhZm9yZ2VAZ21haWwuY29tIiwiY3JlYXRlZEF0IjoiMjAyMy0xMi0wN1QwOTowODo1Mi43NzdaIiwidXBkYXRlZEF0IjoiMjAyMy0xMi0wN1QwOToxMToxNC42MDdaIiwiaWF0IjoxNzAxOTQwMzIxfQ.tuzC-PVTqhF4qFaYOhC4wPxvK48EvNqtV-dh0moZLvI
+}   

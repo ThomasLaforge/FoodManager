@@ -1,6 +1,7 @@
 import { CameraView, useCameraPermissions } from 'expo-camera/next';
 import { useEffect, useState } from 'react';
-import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Button, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { apiPost } from '../tools/fetch';
 
 export default function Page() {
   const [facing, setFacing] = useState<'front' | 'back'>('back');
@@ -9,13 +10,28 @@ export default function Page() {
   const [openFoodData, setOpenFoodData] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(`https://world.openfoodfacts.org/api/v0/product/${scannedData}.json`)
-    .then(response => response.json())
-    .then(data => {
-      Alert.alert('Product found', JSON.stringify(data));
-      setOpenFoodData(data.product.product_name)
-    })
-    .catch(() => Alert.alert('Error', 'Product not found'));
+    const getOpenFoodData = async () => {
+      try {
+        // const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${scannedData}.json`)
+        const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/3310.json`)
+        const data = await response.json()
+        Alert.alert('Product found', JSON.stringify(data));
+        apiPost('/api/products/check-exists', {
+            name: data.product.product_name,
+            description: data.product.description,
+            image: data.product.image_url,
+            barcode: scannedData,
+        });
+        setOpenFoodData(data.product.product_name)
+      }
+      catch(err){
+        Alert.alert('Error', 'Product not found');
+      }
+    }
+
+    if (scannedData) {
+      getOpenFoodData();
+    }
   }, [scannedData]);
 
   if (!permission) {
@@ -49,9 +65,9 @@ export default function Page() {
       facing={facing}
       >
       <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-      <Text style={styles.text}>Flip Camera</Text>
-      </TouchableOpacity>
+      <Pressable style={styles.button} onPress={toggleCameraFacing}>
+        <Text style={styles.text}>Flip Camera</Text>
+      </Pressable>
       </View>
       </CameraView>
     </View>

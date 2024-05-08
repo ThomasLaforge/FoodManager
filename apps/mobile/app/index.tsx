@@ -24,9 +24,7 @@ export default function Index() {
 
     return (
         <View>
-            <Text>Index</Text>
-            <Link href='/scanner'>Scanner</Link>
-
+            <Text>Frizzer !</Text>
             <View style={styles.lastScannedProducts}>
                 <Text>Liste des produits</Text>
                 {products.map((product) => (

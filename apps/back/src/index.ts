@@ -15,6 +15,7 @@ import { TokenBlackListModel } from "./model/TokenBlackList";
 import { authRouter } from "./router/auth";
 import { userRouter } from "./router/users";
 import { productRouter } from "./router/products";
+import { stockRouter } from "./router/stock";
 
 export const sequelize = new Sequelize({
   dialect: 'sqlite',
@@ -32,6 +33,9 @@ export const TokenBlackList = TokenBlackListModel(sequelize);
 User.hasMany(ShoppingList);
 ShoppingList.belongsTo(User);
 
+Operation.belongsTo(Product, { foreignKey: 'product_id' });
+Product.hasMany(Operation, { foreignKey: 'product_id' });
+
 // sequelize.sync({ force: true });
 sequelize.sync();
 
@@ -43,6 +47,7 @@ const apiRouter = express.Router();
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/users', userRouter);
 apiRouter.use('/products', productRouter);
+apiRouter.use('/stock', stockRouter);
 
 app.use("/api", apiRouter);
 

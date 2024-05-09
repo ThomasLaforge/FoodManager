@@ -1,5 +1,5 @@
-@server_url = https://subtle-definitely-kiwi.ngrok-free.app
-# @server_url = http://localhost:1337
+# @server_url = https://subtle-definitely-kiwi.ngrok-free.app
+@server_url = http://localhost:1337
 
 ###
 POST {{server_url}}/api/auth/local/register
@@ -54,3 +54,28 @@ Content-Type: application/json
         "bar_code": "3048282900646"
     }
 }   
+
+###
+POST {{server_url}}/api/stock/add
+Content-Type: application/json
+
+{
+    "data": {
+        "product_id": 1,
+        "quantity": 10
+    }
+}
+
+###
+POST {{server_url}}/api/stock/remove
+Content-Type: application/json
+
+{
+    "data": {
+        "product_id": 1,
+        "quantity": 5
+    }
+}
+
+###
+GET {{server_url}}/api/stock

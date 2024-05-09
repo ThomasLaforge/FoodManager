@@ -39,7 +39,12 @@ export default function RootLayoutNav() {
                 title: 'Scan',
                 tabBarIcon: ({ color }) => <MaterialCommunityIcons name="barcode-scan" size={24} color="black" />,
               }}
-              />
+            />
+            {/* Tab to hide */}
+            <Tabs.Screen
+              name="product/[productId]"
+              options={{ href: null }}
+            />
         </Tabs>
       </View>
     </TamaguiProvider>

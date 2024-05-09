@@ -19,21 +19,21 @@ productRouter.get("/:id", async (req, res) => {
 });
 
 productRouter.post("/", async (req, res) => {
-    const { name, description, price, image } = req.body.data;
-    if(!name || !description || !price || !image){
+    const { name, description, bar_code, image } = req.body.data;
+    if(!name || !description || !bar_code || !image){
         res.status(400).send("Missing required information");
     }
     else {
-        const newProduct = await Product.create({ name, description, price, image });
+        const newProduct = await Product.create({ name, description, image, bar_code});
         res.json(newProduct);
     }
 });
 
 productRouter.put("/:id", async (req, res) => {
-    const { name, description, price, image } = req.body.data;
+    const { name, description, bar_code, image } = req.body.data;
     const actual = await Product.findOne({ where: { id: req.params.id } });
     if (actual) {
-        const newProduct = await actual.update({ name, description, price, image });
+        const newProduct = await actual.update({ name, description, image, bar_code });
         res.json(actual);
     }
     else {
@@ -56,7 +56,7 @@ productRouter.post("/check-exists", async (req, res) => {
     const { name, bar_code, description, image } = req.body.data;
     const product = await Product.findOne({ where: { bar_code } });
     if (product) {
-        res.json({ status: "already-exists", ...product});
+        res.json({ status: "already-exists", ...product.dataValues });
     }
     else {
         const newProduct = await Product.create({ 

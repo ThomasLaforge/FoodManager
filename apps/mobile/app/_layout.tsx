@@ -36,6 +36,7 @@ export default function RootLayoutNav() {
             <Tabs.Screen
               name="scanner"
               options={{
+                unmountOnBlur: true,
                 title: 'Scan',
                 tabBarIcon: ({ color }) => <MaterialCommunityIcons name="barcode-scan" size={24} color="black" />,
               }}
